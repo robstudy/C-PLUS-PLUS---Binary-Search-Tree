@@ -24,6 +24,7 @@ class BinaryTree {
 		Branch *root;
 		void b_insert(Branch *&, T);
 		void b_print(Branch *);
+		bool b_search(Branch *, T);
 		unsigned int size;
 };
 
@@ -70,4 +71,18 @@ void BinaryTree<T>::b_print(Branch *leaf) {
 	cout << leaf->data << endl;
 	b_print(leaf->leftLeaf);
 	b_print(leaf->rightLeaf);
+};
+
+template <class T>
+bool BinaryTree<T>::search(T data) {
+	return b_search(root, data);
+};
+
+template <class T>
+bool BinaryTree<T>::b_search(Branch *branch, T data) {
+	if (!branch) return false;
+	
+	if (branch->data == data) return true;
+	else if (branch->data > data) return b_search(branch->leftLeaf, data);
+	else return b_search(branch->rightLeaf, data);
 };
