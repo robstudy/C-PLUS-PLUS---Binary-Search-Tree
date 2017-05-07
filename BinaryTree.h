@@ -9,7 +9,7 @@ class BinaryTree {
 		void remove(T);
 		void print();
 		bool search(T);
-
+		
 	private:
 		struct Branch {
 			Branch *leftLeaf;
@@ -25,6 +25,9 @@ class BinaryTree {
 		void b_insert(Branch *&, T);
 		void b_print(Branch *);
 		bool b_search(Branch *, T);
+		void b_remove(Branch *&, T);
+		T swapLeft(Branch *&);
+		T swapRight(Branch *&);
 		unsigned int size;
 };
 
@@ -86,3 +89,69 @@ bool BinaryTree<T>::b_search(Branch *branch, T data) {
 	else if (branch->data > data) return b_search(branch->leftLeaf, data);
 	else return b_search(branch->rightLeaf, data);
 };
+
+template <class T>
+void BinaryTree<T>::remove(T data) {
+	b_remove(root, data);
+};
+
+template <class T>
+void BinaryTree<T>::b_remove(Branch *&branch, T data) {
+	if (!branch) return;
+
+	if (branch->data == data) {
+
+		if (!branch->leftLeaf && !branch->rightLeaf) {
+			branch = NULL;
+			delete branch;
+			size--;
+			return;
+		}
+
+		if (branch->leftLeaf && branch->rightLeaf) {
+			branch->data = swapRight(branch->rightLeaf);
+		} else if (branch->leftLeaf) {
+			branch->data = swapRight(branch->leftLeaf);
+		} else {
+			branch->data = swapLeft(branch->rightLeaf);
+		}
+	}
+
+	if (branch->data > data) b_remove(branch->leftLeaf, data);
+	else b_remove(branch->rightLeaf, data);
+};
+
+template <class T>
+T BinaryTree<T>::swapRight(Branch *&branch) {
+	if(branch->rightLeaf) return swapRight(branch->rightLeaf);
+	else if (!branch->leftLeaf && !branch->rightLeaf) { 
+		T hold = branch->data;
+		branch = NULL;
+		delete branch;
+		size--;
+		return hold;
+	} else {
+		T hold = branch->data;
+		if(branch->leftLeaf) 
+			branch->data = swapLeft(branch->leftLeaf);
+		return hold;
+	}
+};
+
+template <class T>
+T BinaryTree<T>::swapLeft(Branch *&branch) {
+	if(branch->leftLeaf) return swapLeft(branch->leftLeaf);
+	else if (!branch->leftLeaf && !branch->rightLeaf) {
+		T hold = branch->data;
+		branch = NULL;
+		delete branch;
+		size--;
+		return hold;
+	} else {
+		T hold = branch->data;
+		if(branch->rightLeaf) 
+			branch->data = swapRight(branch->rightLeaf);
+		return hold;
+	}
+};
+

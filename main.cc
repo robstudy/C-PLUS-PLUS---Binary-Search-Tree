@@ -27,7 +27,10 @@ int main() {
 			cin >> data;
 			if (bt.search(data)) cout << "Found " << data << endl;
 			else cout << data << " not found\n";
-		} else if (input == "PRINT") {
+		} else if (input == "DELETE") {
+			cin >> data;
+			bt.remove(data);	
+		}else if (input == "PRINT") {
 			bt.print();
 		} else if (input == "QUIT") {
 			exit(EXIT_SUCCESS);
