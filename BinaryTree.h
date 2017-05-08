@@ -9,7 +9,7 @@ class BinaryTree {
 		void remove(T);
 		void print();
 		bool search(T);
-		
+		unsigned int size();	
 	private:
 		struct Branch {
 			Branch *leftLeaf;
@@ -28,19 +28,19 @@ class BinaryTree {
 		void b_remove(Branch *&, T);
 		T swapLeft(Branch *&);
 		T swapRight(Branch *&);
-		unsigned int size;
+		unsigned int _size;
 };
 
 template <class T>
 BinaryTree<T>::BinaryTree() {
-	size = 0;
+	_size = 0;
 };
 
 template <class T>
 void BinaryTree<T>::insert(T data) {
 	if(!root) {
 		root = new Branch(NULL, NULL, data);
-		size++;
+		_size++;
 		return;
 	}
 
@@ -53,7 +53,7 @@ template <class T>
 void BinaryTree<T>::b_insert(Branch *&leaf, T data) {
 	if (!leaf) {
 		leaf = new Branch(NULL, NULL, data);
-		size++;
+		_size++;
 	}
 
 	if(leaf->data == data) return;
@@ -104,13 +104,13 @@ void BinaryTree<T>::b_remove(Branch *&branch, T data) {
 		if (!branch->leftLeaf && !branch->rightLeaf) {
 			branch = NULL;
 			delete branch;
-			size--;
+			_size--;
 			return;
 		}
 
 		if (branch->leftLeaf && branch->rightLeaf) {
 			branch->data = swapRight(branch->rightLeaf);
-		} else if (branch->leftLeaf) {
+		} else if (branch->leftLeaf && !branch->rightLeaf) {
 			branch->data = swapRight(branch->leftLeaf);
 		} else {
 			branch->data = swapLeft(branch->rightLeaf);
@@ -128,7 +128,7 @@ T BinaryTree<T>::swapRight(Branch *&branch) {
 		T hold = branch->data;
 		branch = NULL;
 		delete branch;
-		size--;
+		_size--;
 		return hold;
 	} else {
 		T hold = branch->data;
@@ -145,7 +145,7 @@ T BinaryTree<T>::swapLeft(Branch *&branch) {
 		T hold = branch->data;
 		branch = NULL;
 		delete branch;
-		size--;
+		_size--;
 		return hold;
 	} else {
 		T hold = branch->data;
@@ -155,3 +155,7 @@ T BinaryTree<T>::swapLeft(Branch *&branch) {
 	}
 };
 
+template <class T>
+unsigned int BinaryTree<T>::size() {
+	return _size;
+};

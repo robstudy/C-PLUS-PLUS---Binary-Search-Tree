@@ -30,10 +30,12 @@ int main() {
 		} else if (input == "DELETE") {
 			cin >> data;
 			bt.remove(data);	
-		}else if (input == "PRINT") {
+		} else if (input == "PRINT") {
 			bt.print();
 		} else if (input == "QUIT") {
 			exit(EXIT_SUCCESS);
+		} else if (input == "SIZE") {
+			cout << "Size " << bt.size() << endl;
 		}
 	}
 
